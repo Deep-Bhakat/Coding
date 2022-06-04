@@ -55,6 +55,7 @@ Code:
                 break;
             }
         }
+        //edge case if the array is in decreasing order we do not find a breakpoint, so index1 = -1, so we just reverse it 
         if(index1<0)
             reverse(nums.begin(),nums.end());
         else{
