@@ -36,6 +36,9 @@ So we find the first element which is smaller than the next element to it and st
 Now we find the first element greater than the index1 element and store it in index2
 Now swap both the elements to make the first part of the array lexographically increasing
 Lastly, reverse the elements after index1 to make it increasing which will be the next permutation
+
+Time Complexity -> O(n) + O(n) + O(n) = O(n)
+Space Complexity -> O(1)
 Example:
  [1,3,5,4,2]
  We find 3 as the element smaller than its neighbour, so index1 = 1
