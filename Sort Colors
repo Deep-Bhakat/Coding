@@ -1,0 +1,57 @@
+Sort Colors
+
+Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
+
+We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively.
+
+You must solve this problem without using the library's sort function.
+
+
+Example 1:
+
+Input: nums = [2,0,2,1,1,0]
+Output: [0,0,1,1,2,2]
+
+//Brute Force
+Sort the array
+
+Time Complexity -> O(n log n)
+Space Complexity -> O(1)
+
+//Better Approach
+Do counting sort
+Count the total no of 0's 1's and 2's and then run a loop to override the array 
+
+Time Complexity -> O(n) + O(n) = O(n)
+Space Complexity -> O(1)
+
+//Optimal Single Pass 3 pointer approach
+Take 3 pointers 
+l and m pointing to start of the array and h pointing to the end of the array
+Now run a loop till m<=h
+If arr[m] == 0
+swap arr[l] and arr[m] and increment both l and m
+If arr[m] == 1
+just increament m
+else
+swap arr[m] and arr[h] and decrement h
+
+The algo is based on the logic that every element before l is 0, between l and h is 1 and after h is 2
+
+Time Complexity -> O(n)
+Space Complexity -> O(1)
+
+Code :
+  void sortColors(vector<int>& nums) {
+        //3 pointers
+        int l=0,m=0,h=nums.size()-1;
+    
+        while(m<=h){
+            if(nums[m]==1)
+                m++;
+            else if(nums[m]==0)
+                swap(nums[l++],nums[m++]);
+            else
+                swap(nums[m],nums[h--]);
+        }       
+    }
