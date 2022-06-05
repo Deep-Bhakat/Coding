@@ -34,7 +34,7 @@ Space Complexity -> O(1)
 
   int maxSubArray(vector<int>& nums) {
     int sum = 0;
-    int ans = arr[0];
+    int ans = nums[0];
     
     for(auto i: nums){
       sum+=i;
