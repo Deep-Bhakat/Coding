@@ -1,0 +1,72 @@
+ Letter Combinations of a Phone Number
+ Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.
+
+A mapping of digit to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+
+Example 1:
+
+Input: digits = "23"
+Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+Example 2:
+
+Input: digits = ""
+Output: []
+
+
+There are 2 approaches iterative and recursive
+Iterative one uses a queue so
+Time Complexity -> O(4^N) as there may be max 4 letters for a number
+Space Complexity -> O(n) for queue
+
+Recursive
+For each letter we find the no of possible combinations 
+Time Complexity -> O(4^N) as there may be max 4 letters for a number
+Space Complexity -> O(1) but may take some space for recursive call stack
+
+Code:
+
+    void solve(string digits,vector<string>& ans,string output,int index,vector<string> keypad){
+    //base case if the index is equal to the size of digits then we push back the string to ans
+        if(index>=digits.size()){
+            ans.push_back(output);
+            return;
+        }
+        //getting the number
+        int number = digits[index]-'0';
+        //getting the equivalent string
+        string s = keypad[number];
+        //for every letter
+        for(int i=0;i<s.size();i++){
+            //we add it to output and call recursive function for the next index
+            output.push_back(s[i]);
+            solve(digits,ans,output,index+1,keypad);
+            //backtracking to remove the element inserted
+            output.pop_back();            
+        }
+    }
+public:
+    vector<string> letterCombinations(string digits) {
+        vector<string> ans;
+        string output;
+        //if empty string is given
+        if(digits.size()==0)
+            return ans;
+        int index = 0;
+        //forming the keypad
+        vector<string> keypad ={
+            "",
+            "",
+            "abc",
+            "def",
+            "ghi",
+            "jkl",
+            "mno",
+            "pqrs",
+            "tuv",
+            "wxyz"
+        };
+        //calling the recursive function
+        solve(digits,ans,output,index,keypad);
+        return ans;
+
+    }
