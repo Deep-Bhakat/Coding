@@ -1,0 +1,52 @@
+Remove Duplicates from Sorted List II
+
+Given the head of a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list. Return the linked list sorted as well.
+
+Question:
+1->2->3->3->4->4->5
+
+Ans : 1->2->5
+Input: head = [1,2,3,3,4,4,5]
+Output: [1,2,5]
+ 
+ 
+ //brute force
+ The brute force is to run 2 loops and find all the duplicates and add non duplicates to a new list
+ 
+ Time Complexity -> O(n^2)
+ Space Complexity -> O(n)
+ 
+ //Optimal approach
+ 
+ We take a pointer and point its next to the head
+ Now we travese through the list and is there are duplicates we remove them by changing the next pointer
+ 
+ Time Complexity -> O(n)
+ Space Complexity -> O(1)
+ 
+ 
+ 
+ Code :
+ ListNode* deleteDuplicates(ListNode* head) {
+          if(head==NULL || head->next==NULL)
+                return head;
+        
+        //creating a dummy pointer
+        ListNode* dummy = new ListNode(0);
+        dummy -> next = head;
+        ListNode* curr = dummy;
+        int dup;
+        while(curr->next && curr->next->next){
+                //if there are duplicates
+            if(curr->next->val == curr->next->next->val){
+                dup = curr->next->val;
+            //we remove all the duplicates
+            while(curr->next && curr->next->val == dup){
+                curr->next = curr->next->next;
+            }
+            }else
+            //else we just move the curr pointer
+            curr=curr->next;
+        }
+        return dummy -> next;
+    }
