@@ -1,0 +1,59 @@
+Area of the largest rectangle possible from given coordinates
+
+Given two arrays arr1[] and arr2[] of N denoting N coordinates of the form (arr1[i], 0) and M positive integers denotingM coordinates of the form (arr2[j], 1) 
+where 1 ≤ i ≤ N and 1≤ j ≤ M. 
+The task is to find the area of the largest rectangle that can be formed using these coordinates. 
+Print 0 if no rectangle can be formed.
+
+Examples:
+
+Input: arr1[] = {1, 2, 4}, arr2[] = {1, 3, 4}
+Output: 3
+Explanation: The largest rectangle possible is {(1, 0), (1, 1), (4, 0), (4, 1)}.
+Therefore, area of rectangle = length * breadth = (4 – 1)*(1 – 0) = 3
+
+Input: arr1[] = {1, 3, 5}, arr2[] = {4, 2, 10}
+Output: 0
+Explanation: No rectangle can be formed. Therefore, the answer is zero.
+
+//brute force
+Use 2 loops to find the max length
+
+//optimised
+Use Sorting and 2 pointers
+
+Sort the arrays
+then use pointers to find the coordinate where they match
+take the smallest one as start and largest one as end
+return end - start
+
+Code :
+ int largestArea(int arr1[], int n,int arr2[], int m){
+    //sorting the arrays
+    sort(arr1.begin(),arr1.end());
+    sort(arr2.begin(),arr2.end());
+    int start = 0, end = 0, i = 0, j = 0;
+    while(i<n && j<m){
+      //if coordinates match
+      if(arr1[i]==arr2[j]){
+        //if no starting point is found
+        if(start==0){
+          start = arr1[i];
+        }else{
+        //else we update the ending point
+          end = arr1[i];
+        }
+        i++;
+        j--;
+      }else if(arr1[i]>arr2[j]){
+          j--;
+      }else{
+        i++;
+      }
+    }
+    
+    if(start == 0 || end == 0)
+      return 0;
+    else
+      return (end - start);
+ }
