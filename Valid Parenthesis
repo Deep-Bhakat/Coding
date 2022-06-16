@@ -23,6 +23,8 @@ If we get a closing bracket we get the top element from stack if the element is 
 otherwise we return false as brackets do not match
 lastly we also return false if the stack is not empty at the end
 
+Time Complexity -> O(n)
+Space Complexity -> O(n)
 Code:
    bool isValid(string s) {
         stack<char> st;
