@@ -1,0 +1,43 @@
+Merge Intervals
+
+Given an array of intervals where intervals[i] = [starti, endi], 
+merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.
+Example 1:
+
+Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
+Output: [[1,6],[8,10],[15,18]]
+Explanation: Since intervals [1,3] and [2,6] overlap, merge them into [1,6].
+
+Brute Force:
+Sort the array then run 2 loops and check for each subinterval and make a new interval
+
+Time Complexity -> O(n^2) + O(nlogn) = O(n^2)
+Space Complexity -> O(n)
+
+Optimal Approach
+Sort the array
+Create a array
+Now traverse the array and check if newArray is empty 
+If empty insert the interval
+If not then check if the last interval is greater than the new interval is yes then replace the last interval with max of both intervals
+else 
+add interval
+
+Time Complexity -> O(nlogn)
+Space Complexity -> O(n)
+
+Code :
+ vector<vector<int>> merge(vector<vector<int>>& intervals) {
+      vector<vector<int>> merged;
+        //sorting the intervals
+        sort(intervals.begin(),intervals.end());
+        for(auto interval:intervals){
+            //if merged is empty or last element of merged is less than first element of interval we insert
+            if(merged.empty() || merged.back()[1]<interval[0])
+                merged.push_back(interval);
+            else
+                merged.back()[1]=max(merged.back()[1],interval[1]);
+        }
+        
+        return merged;
+    }
