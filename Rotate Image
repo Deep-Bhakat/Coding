@@ -5,6 +5,11 @@ You have to rotate the image in-place, which means you have to modify the input 
 Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]
 Output: [[7,4,1],[8,5,2],[9,6,3]]
 
+Brute Force:
+Take a dummy matrix and copy the first row to the last column of the dummy matrix and so on.
+
+Time complexity -> O(n^2)
+Space Complexity -> O(n^2)
 Approach
 The simple approach is first to transpose the matrix and then reverse each row of the matrix
 
