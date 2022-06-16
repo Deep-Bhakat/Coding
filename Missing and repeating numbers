@@ -1,0 +1,94 @@
+Missing and repeating numbers
+
+Problem Statement
+You are given an array of size ‘N’. The elements of the array are in the range from 1 to ‘N’.
+Ideally, the array should contain elements from 1 to ‘N’. But due to some miscalculations, there is a number R in the range [1, N] which appears in the array twice and another number M in the range [1, N] which is missing from the array.
+Your task is to find the missing number (M) and the repeating number (R).
+
+
+Brute Force:
+Use a frequency array and count the frequencies.
+
+Time Complexity -> O(n)
+Space Complexity -> O(n)
+
+Code:
+
+pair<int,int> missingAndRepeating(vector<int> &arr, int n)
+{
+	// Write your code here 
+	pair<int,int> ans;
+    vector<int> freq(n+1,0);
+    for(int i=0;i<n;i++)
+        freq[arr[i]]++;
+    for(int i=1;i<=n;i++){
+        if(freq[i]>1)
+            ans.second=i;
+        if(freq[i]==0)
+            ans.first=i;
+    }
+    return ans;
+}
+
+Using Maths:
+
+We can use Maths to form equations to solve the problem
+We know sum of n natural numbers = N*(N+1)/2 = S
+As well as sum of squares of n natural numbers = N*(N+1)*(2N+1)/6 = P
+
+Now we need to find sum of array elements and sum of squares of array elements
+And set them as S1 and P1
+
+Now let the 2 numbers be X as missing number and Y as repeating number
+So we can see
+X - Y = S - S1
+
+Example:
+let array = [1,4,3,2,2]
+S = 5*6/2 = 15
+S1 = 1+4+3+2+2 = 12
+X - Y = 15 - 12 = 3
+
+Now
+P = 55
+P1 = 34
+X^2 - Y^2 = P - P1
+          = 55 - 34
+          = 21
+(X-Y)(X+Y) = 21
+X+Y = 21/3 = 7
+
+So now
+X + Y = 7
+X - Y = 3
+2X = 10
+X = 5
+Y = X - S' = 5 - 3 = 2
+
+Time Complexity -> O(n)
+Space Complexity -> O(1)
+
+Code:
+vector<int>missing_repeated_number(const vector<int> &A) {
+    long long int len = A.size();
+
+    long long int S = (len * (len+1) ) /2;
+    long long int P = (len * (len +1) *(2*len +1) )/6;
+    long long int missingNumber=0, repeating=0;
+     
+    for(int i=0;i<A.size(); i++){
+       S -= (long long int)A[i];
+       P -= (long long int)A[i]*(long long int)A[i];
+    }
+     
+    missingNumber = (S + P/S)/2;
+
+    repeating = missingNumber - S;
+
+    vector <int> ans;
+
+    ans.push_back(repeating);
+    ans.push_back(missingNumber);
+
+    return ans;
+}
