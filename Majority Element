@@ -1,0 +1,66 @@
+Majority Element
+
+Given an array nums of size n, return the majority element.
+
+The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
+
+Example 1:
+
+Input: nums = [3,2,3]
+Output: 3
+
+Brute Force:
+Check the occurance of elements one by one using 2 loops
+
+Time Complexity -> O(n^2)
+Space Complexity -> O(1)
+
+Using extra space:
+
+Use a map to store occurances of elements
+Traverse the map and return elements with count > n/2
+
+Time Complexity -> O(n)
+Space Complexity -> O(n)
+
+Code:
+ int majorityElement(vector<int>& nums) {
+       unordered_map<int,int> m;
+        for(auto i:nums)
+            m[i]++;
+        
+        for(auto i: m)
+            if(i.second>nums.size()/2)
+                return i.first;
+        
+        return -1;
+    }
+ 
+ 
+Without extra space (Moore’s Voting Algorithm):
+Take a element and a count variable
+Traverse the array
+if count == 0 then we make element = the array element
+now if the element == array[i] we increase the count else we decrease the count
+
+Time Complexity -> O(n)
+Space Complexity -> O(1)
+
+Code:
+int majorityElement(vector<int>& nums) {
+       int count = 0, element = -1;
+        
+        for(auto i:nums){
+            if(count==0)
+                element = i;
+            
+            if(element == i)
+                count++;
+            else
+                count--;
+        }
+        
+        return element;
+    }
+
+
