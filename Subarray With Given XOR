@@ -1,0 +1,63 @@
+Subarray With Given XOR
+Problem Description
+
+Given an array of integers A and an integer B.
+
+Find the total number of subarrays having bitwise XOR of all elements equals to B.
+
+Examples:
+
+Input Format:  A = [4, 2, 2, 6, 4] , B = 6
+Result: 4
+Explanation: The subarrays having XOR of their elements as 6 are  [4, 2], [4, 2, 2, 6, 4], [2, 2, 6], [6]
+
+
+Brute Force:
+Find all the subarrays and then find the arrays with given xor.
+
+Time Complexity -> O(N^2)
+Space Complexity -> O(N)
+
+Code:
+int solve(int[] a,int x){
+	int  count = 0;
+	for(int i = 0; i < a.length; ++i){
+		int sum = 0;
+		for(int j = i; j < a.length; ++j){
+			sum ^= a[j];
+			if(sum == x){
+				count++;
+			}
+		}
+	}
+	return count;
+ }
+ 
+ 
+Optimal Approach:
+We need to traverse the array while we maintain variables for current_perfix_xor, counter, and also a map to keep track of visited xors. 
+This map will maintain the frequency count of all previous visited current_prefix_xor values. 
+If for any index current_prefix_xor is equal to B, we increment the counter. 
+If for any index we find that Z is present in the visited map, we increment the counter by visited[Z] (Z=current_prefi_xor^B). 
+At every index, we insert the current_prefix_xor into the visited map with its frequency.
+
+Time Complexity -> O(N)
+Space Complexity -> O(N)
+
+Code:
+int solve(vector<int> &A, int B) {
+   unordered_map<int,int> m;
+    int xorr = 0,count = 0;
+    
+    for(auto i:A){
+        xorr ^= i;
+        if(xorr == B)
+            count++;
+        int h = xorr^B;    
+        if(m.find(h)!=m.end())
+            count+=m[h];
+            
+        m[xorr]++;
+    }
+    return count;
+}
