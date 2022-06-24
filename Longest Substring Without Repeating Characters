@@ -1,0 +1,65 @@
+Longest Substring Without Repeating Characters
+
+Given a string s, find the length of the longest substring without repeating characters.
+
+Example 1:
+
+Input: s = "abcabcbb"
+Output: 3
+Explanation: The answer is "abc", with the length of 3.
+Example 2:
+
+Input: s = "bbbbb"
+Output: 1
+Explanation: The answer is "b", with the length of 1.
+
+Brute Force:
+Find all the substrings and calculate longest one without repeating characters using hashset
+
+Time Complexity -> O(N^2)
+Space Complexity -> O(N)
+
+Code:
+int solve(string str) {
+  int maxans = INT_MIN;
+  for (int i = 0; i < str.length(); i++) // outer loop for traversing the string
+  {
+    unordered_set < int > set;
+    for (int j = i; j < str.length(); j++) // nested loop for getting different string starting with str[i]
+    {
+      if (set.find(str[j]) != set.end()) // if element if found so mark it as ans and break from the loop
+      {
+        maxans = max(maxans, j - i);
+        break;
+      }
+      set.insert(str[j]);
+    }
+  }
+  return maxans;
+}
+
+Optimal Approach:
+We can traverse through the array and use 2 pointers to check for duplicates
+if we encounter a duplicate we increment i else we add it to a hashset and increment j and find max of ans and j-i
+
+Time Complexity -> O(N)
+Space Complexity -> O(N)
+
+Code:
+ int lengthOfLongestSubstring(string s) {
+        unordered_set<char> set;
+        int i=0,j=0,ans=0;
+        while(i<s.length() && j<s.length()){       
+            //if we did not find the same element
+            if(set.find(s[j])==set.end()){
+                //we insert it into the set and update ans
+                set.insert(s[j++]);
+                ans = max(ans,j-i);
+            }else{
+                //else we increment i and remove the ith element from set
+                set.erase(s[i++]);
+            }
+        }
+        return ans;
+    }
+
