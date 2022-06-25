@@ -1,0 +1,63 @@
+Reverse Linked List
+
+Given the head of a singly linked list, reverse the list, and return the reversed list.
+
+Example:
+
+Input: head = [1,2,3,4,5]
+Output: [5,4,3,2,1]
+
+Iterative:
+We can use 3 pointers to reverse the list prev, curr and next.
+The prev will point to NULL at start, curr to the current node and next to the next node.
+Now make the next point to curr->next, curr->next to prev and prev to curr and curr to next
+
+Time Complexity -> O(N)
+Space Complexity -> O(1)
+
+Code:
+ ListNode* reverseList(ListNode* head) {
+        if(head==NULL || head->next==NULL)
+            return head;
+        
+        //iterative
+        ListNode* prevNode = NULL;
+        ListNode* nextNode;
+        while(head){
+            nextNode=head->next;
+            head->next=prevNode;
+            prevNode=head;
+            head=nextNode;
+        }
+        return prevNode;
+    }
+    
+Recursive:
+We can use recursion to traverse through the list and reverse the list except the first list and store it in smallList
+Now we make head->next->next (which is the second node) point to head
+And atlast we make head point to NULL
+then we return the smallList
+
+Example:
+List = 1->2->3->4
+SmallList = 4->3->2
+
+we point head->next->next to head that is 2->next = 1
+and then head->next = NULL that is 1=NULL
+
+So the smallList becomes 4->3->2->1
+
+Time Complexity -> O(N)
+Space Complexity -> O(1) or Stack call stack
+
+Code:
+ ListNode* reverseList(ListNode* head) {
+        if(head==NULL || head->next==NULL)
+            return head;
+        
+        //recursive
+        ListNode* smallList = reverseList(head->next);
+        head->next->next = head;
+        head->next = NULL;
+        return smallList;
+    }
