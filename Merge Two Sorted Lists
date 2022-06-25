@@ -1,0 +1,109 @@
+Merge Two Sorted Lists
+
+You are given the heads of two sorted linked lists list1 and list2.
+
+Merge the two lists in a one sorted list. The list should be made by splicing together the nodes of the first two lists.
+
+Return the head of the merged linked list.
+
+Example:
+Input: list1 = [1,2,4], list2 = [1,3,4]
+Output: [1,1,2,3,4,4]
+
+Using Extra Space:
+We can use an extra linked list and then use 2 pointers to fill the next list in sorted manner
+
+Time Complexity -> O(N+M)
+Space Complexity -> O(N+M)
+
+Code:
+ ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        //extra space approach
+        ListNode* newList = new ListNode(-1);        
+        ListNode* dummy = newList;
+        
+        while(list1!=NULL && list2!=NULL){
+            if(list1->val<=list2->val){
+                newList->next = list1;
+                newList = newList -> next;
+                list1=list1->next;
+            }else{
+                newList->next = list2;
+                newList = newList -> next; 
+                list2=list2->next;
+            }
+        }
+        
+         while(list1!=NULL){
+                newList->next = list1;
+                newList = newList -> next;    
+                list1=list1->next;
+        }
+         while(list2!=NULL){
+                newList->next = list2;
+                newList = newList -> next;    
+                list2=list2->next;
+        }
+        
+        return dummy->next;
+  }
+
+
+Without Extra Space:
+We can use 4 pointers to modify the list with smaller first element and make it a single list
+Suppose l1 and l2 are 2 lists and l1 has first element smaller than l2's first element
+Now we traverse till either list is null
+if any element of l2 is greater than the current element of l1 but smaller than next eleement of l1 we add the l2 element in between
+
+Time Complexity -> O(N+M)
+Space Complexity -> O(1)
+
+Code:
+
+    ListNode* solve(ListNode* list1,ListNode* list2){
+        if(list1->next == NULL){
+            list1->next = list2;
+            return list1;
+        }
+        ListNode *curr1=list1,*next1=curr1->next,*curr2=list2,*next2=NULL;
+        
+        while(next1!=NULL && curr2!=NULL){
+            if((curr2->val >= curr1->val) && (curr2->val <= next1->val)){
+                curr1->next = curr2;
+                next2= curr2->next;
+                curr2->next = next1;
+                curr1=curr2;
+                curr2=next2;
+            }else{
+                curr1=curr1->next;
+                next1=next1->next;
+                
+                if(next1==NULL){
+                    curr1->next = curr2;
+                    return list1;
+                }
+            }
+        }
+        
+      return list1;
+  
+    }
+public:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        if(list1==NULL)
+            return list2;
+        if(list2==NULL)
+            return list1;
+        
+        if(list1->val <= list2->val)
+           list1= solve(list1,list2);
+        else
+          list1= solve(list2,list1);
+        
+            return list1;
+
+    }
+
+
+Time Complexity -> O(N+M)
+Time Complexity -> O(1)
