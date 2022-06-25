@@ -1,0 +1,44 @@
+Remove Nth Node From End of List
+
+Given the head of a linked list, remove the nth node from the end of the list and return its head.
+
+Example:
+Input: head = [1,2,3,4,5], n = 2
+Output: [1,2,3,5]
+
+Brute Force:
+Traverse 2 times first to calculate the length of the List n
+And then run till n-k-1 and then delete the node
+
+Time Complexity -> O(2N)
+Space Complexity -> O(1)
+
+Optimal Approach(Two Pointer Approach):
+We can use two pointers to do this.
+We can make one pointer point to k elements from the start
+Then we make slow and fast traverse till fast->next != NULL
+Now as slow is pointing to the previous node to the node to be deleted
+We delete it then by slow->next = slow->next->next
+
+Time Complexity -> O(N)
+Space Complexity -> O(1)
+
+Code:
+ListNode* removeNthFromEnd(ListNode* head, int n) {
+       if (!head)
+        return NULL;
+        ListNode* start = new ListNode(-1);
+        start->next = head;
+    ListNode* fast=start,*slow=start;
+        
+        for(int i=1;i<=n;i++)
+            fast=fast->next;
+        
+        while(fast->next!=NULL){
+            slow=slow->next;
+            fast=fast->next;
+        }
+        
+        slow->next=slow->next->next;
+        return start->next;
+    }
