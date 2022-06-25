@@ -1,0 +1,48 @@
+Middle of the Linked List
+
+Given the head of a singly linked list, return the middle node of the linked list.
+
+If there are two middle nodes, return the second middle node.
+
+Example:
+
+Input: head = [1,2,3,4,5]
+Output: [3,4,5]
+Explanation: The middle node of the list is node 3.
+
+Brute Force:
+Traverse through the list while maintaining a variable n to count the length of the list
+Now again traverse the 2nd time till n/2.
+
+Time Complexity -> O(N) + O(N/2)
+Space Complexity -> O(1)
+
+Optimal Approach (Rabbit and Tortoise Method):
+Use 2 pointers slow and fast.
+Make them point to head
+Move fast by 2 steps and slow by 1 step
+When fast will reach the end slow will be at the middle of the list
+Return slow
+
+Time Complexity-> O(N/2) = O(N)
+Space Complexity -> O(1)
+
+Code:
+
+    ListNode* middleNode(ListNode* head) {
+    
+        if(head==NULL || head->next == NULL)
+                return head;
+        
+            
+        ListNode* slow = head;
+        ListNode* fast = head;
+        
+          while(fast && fast->next){          
+                fast=fast->next->next;
+                slow=slow->next;             
+              
+        }
+        return slow;
+    }
+
