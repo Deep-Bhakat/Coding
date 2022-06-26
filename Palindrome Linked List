@@ -1,0 +1,88 @@
+Palindrome Linked List
+
+Given the head of a singly linked list, return true if it is a palindrome.
+
+Example:
+Input: head = [1,2,2,1]
+Output: true
+
+Brute Force:
+Take an stack and add list elements to it
+Pop from the stack and check for palindrome
+
+Time Complexity -> O(N) for adding to stack + O(N) for checking palindrome
+Space Complexity -> O(N) for the extra stack
+
+Code:
+ bool isPalindrome(ListNode* head) {
+        
+        ListNode* curr = head;
+        stack<int> s;
+        while(curr!=NULL){
+            s.push(curr->val);
+            curr = curr->next;            
+        }
+        
+        
+        while(!s.empty())
+        {
+            if(s.top()!=head->val)
+                return false;
+            s.pop();
+            head=head->next;
+        }
+        
+        return true;
+        
+ }
+
+Optimal Approach:
+If we observe carefully a palindrome is:
+Start to middle = reverse of middle to end
+
+So our approach is
+Find the middle of the list
+Reverse from middle to end
+Check if it is palindrome
+
+Time Complexity -> O(N/2) + O(N/2) + O(N/2)
+Space Complexity -> O(1)
+
+Code:
+  ListNode* middleList(ListNode* head){
+        ListNode* slow= head,*fast = head;
+        
+        while(fast!=NULL && fast->next!=NULL){
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+        
+        return slow;
+    }
+    ListNode* reverseList(ListNode* head){
+        ListNode* prev=NULL,*next = NULL;
+        
+        while(head!=NULL){
+            next = head->next;
+            head->next=prev;
+            prev=head;
+            head=next;
+        }
+        return prev;
+
+    }
+    bool isPalindrome(ListNode* head) {
+        
+        ListNode *middle = middleList(head);
+        
+        middle = reverseList(middle);
+        while(middle!=NULL){
+            if(middle->val!=head->val)
+                return false;
+            middle=middle->next;
+            head=head->next;
+        }
+        return true;
+        
+        
+    }
