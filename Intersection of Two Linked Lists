@@ -1,0 +1,85 @@
+Intersection of Two Linked Lists
+
+Given the heads of two singly linked-lists headA and headB, return the node at which the two lists intersect. 
+If the two linked lists have no intersection at all, return null.
+
+Example:
+
+Input: intersectVal = 8, listA = [4,1,8,4,5], listB = [5,6,1,8,4,5], skipA = 2, skipB = 3
+Output: Intersected at '8'
+Explanation: The intersected node's value is 8 (note that this must not be 0 if the two lists intersect).
+From the head of A, it reads as [4,1,8,4,5]. From the head of B, it reads as [5,6,1,8,4,5]. 
+There are 2 nodes before the intersected node in A; There are 3 nodes before the intersected node in B.
+
+Input:
+ List1 = [1,2,7], List 2 = [2,8,1]
+Output:
+ Null
+
+Brute Force:
+For every element in the second list traverse all elements of the first list unless the nodes match
+
+Time Complexity -> O(N*M)
+Space Complexity -> O(1)
+Code:
+   ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+ while(head2 != NULL) {
+        ListNode* temp = head1;
+        while(temp != NULL) {
+            //if both nodes are same
+            if(temp == head2) return head2;
+            temp = temp->next;
+        }
+        head2 = head2->next;
+    }
+    //intersection is not present between the lists return null
+    return NULL;
+    }
+    
+Extra Space Approach:
+We can use a set or map and store the nodes of the first list
+Then we can traverse through the second list and check if node is there in the set
+
+Time Complexity -> O(N+M)
+Space Complexity -> O(N)
+
+Code:
+ ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+    unordered_set<ListNode*> s;
+       while(headA!=NULL)
+       {
+           s.insert(headA);
+           headA=headA->next;
+       }
+       
+       while(headB!=NULL){
+           if(s.find(headB)!=s.end())
+               return headB;
+           headB=headB->next;
+       }
+       
+       return NULL;
+}
+
+
+Optimal Approach:
+We can use the difference in the lengths of the LL to out advantage
+WE can traverse both lists together one will end first,
+We then point that node to the start of the second node
+and traverse untill they match
+
+Time Complexity -> O(2*max(N,M))
+Space Complexity -> O(1)
+
+Code:
+  ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+    ListNode *cur1 = headA, *cur2 = headB;
+    
+       while(cur1!=cur2){
+           cur1 = cur1==NULL ? headB : cur1->next;           
+           cur2 = cur2==NULL ? headA : cur2->next;
+
+       }
+       
+       return cur1;
+}
