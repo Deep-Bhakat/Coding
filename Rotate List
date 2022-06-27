@@ -1,0 +1,64 @@
+Rotate List
+
+Given the head of a linked list, rotate the list to the right by k places.
+
+Example:
+Input: head = [1,2,3,4,5], k = 2
+Output: [4,5,1,2,3]
+
+Input: head = [0,1,2], k = 4
+Output: [2,0,1]
+
+Brute Force:
+We can iterate through the linked list k times and each time move the last element to the first
+
+Time Complexity -> O(N*k)
+Space Complexity -> O(1)
+
+Code:
+    ListNode* rotateRight(ListNode* head, int k) {
+      if(head == NULL||head->next == NULL) return head;
+    for(int i=0;i<k;i++) {
+        node* temp = head;
+        //going to the second last node
+        while(temp->next->next != NULL) temp = temp->next;
+        node* end = temp->next;
+        temp->next = NULL;
+        end->next = head;
+        head = end;
+    }
+    return head;
+ }
+ 
+ Optimal Approach:
+ We can observe that if k is greater than the length of the list we dont need to do so many operations
+ We can make the list as circular and then find k%length and break that link
+ 
+ Time Complexity -> O(N)
+ Space Complexity -> O(1)
+ 
+ Code:
+ ListNode* rotateRight(ListNode* head, int k) {
+        if(!head || !head->next || k==0)
+            return head;
+        
+        int len = 1;
+        //calculating length
+        ListNode* temp = head;
+        while(temp->next!=NULL){
+            len=len+1;
+            temp=temp->next;
+        }
+        //making the list circular
+        temp->next = head;
+        k = k%len;
+        int end = len-k;
+        while(end--){
+            temp=temp->next;
+        }
+        head = temp->next;
+        temp->next=NULL;
+        
+        return head;
+    }
+ 
