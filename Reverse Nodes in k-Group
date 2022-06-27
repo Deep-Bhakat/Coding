@@ -1,0 +1,69 @@
+Reverse Nodes in k-Group
+
+Given the head of a linked list, reverse the nodes of the list k at a time, and return the modified list.
+
+k is a positive integer and is less than or equal to the length of the linked list. 
+If the number of nodes is not a multiple of k then left-out nodes, in the end, should remain as it is.
+
+You may not alter the values in the list's nodes, only nodes themselves may be changed.
+
+Example :
+Input: head = [1,2,3,4,5], k = 2
+Output: [2,1,4,3,5]
+
+Input: head = [1,2,3,4,5], k = 3
+Output: [3,2,1,4,5]
+
+Approach:
+We need to get the length of the list at first
+Then we need to run a loop N/k times
+Inside the loop we need to do the reverse operations
+Create a dummy node. Point next to this node to head of the linked list provided.
+Iterate through the given linked list to get the length of the list.
+Create three pointer pre,cur and nex to reverse each group. Why? If we observe output, we can see that we have to reverse each group, apart from modifying links of group.
+Iterate through the linked list until the length of list to be processed is greater than and equal to given k.
+For each iteration, point cur to pre->next and nex to nex->next.
+Start nested iteration for length of k.
+For each iteration, modify links as following steps:-
+cur->next = nex->next
+nex->next = pre->next
+pre->next = nex
+nex = cur->next
+Move pre to cur and reduce length by k.
+
+Time Complexity -> O(N/k *k) = O(N)
+Space Complexity -> O(1)
+
+Code:
+int getLength(ListNode* head){
+        int count = 1;
+        while(head->next!=NULL){
+            count++;
+            head=head->next;
+        }
+        
+        return count;
+    }
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if(!head || k==1)
+            return head;
+        
+        int len = getLength(head);
+        ListNode *dummy = new ListNode(-1);
+        dummy->next = head;
+        ListNode* curr = dummy,*prev=dummy,*nex=dummy;
+        
+        while(len>=k){
+            curr=prev->next;
+            nex=curr->next;
+            for(int i=1;i<k;i++){
+                curr->next = nex->next;
+                nex->next=prev->next;
+                prev->next=nex;
+                nex=curr->next;                
+            }
+            prev=curr; 
+            len-=k;
+        }
+        return dummy->next;
+    }
