@@ -1,0 +1,56 @@
+Fractional Knapsack 
+
+Given weights and values of N items, we need to put these items in a knapsack of capacity W to get the maximum total value in the knapsack.
+Note: Unlike 0/1 knapsack, you are allowed to break the item
+
+Example 1:
+
+Input:
+N = 3, W = 50
+values[] = {60,100,120}
+weight[] = {10,20,30}
+Output:
+240.00
+Explanation:Total maximum value of item
+we can have is 240.00 from the given
+capacity of sack. 
+
+Approach:
+As it is greedy so we need to sort the array
+But as we can take fractions as well so we need to sort the array based on highest value/weight ratio.
+After sorting we can traverse the array and add values of all elements untill W is reached or the whole item cannot be added
+Then we find out the remaining space and add fraction part to it.
+
+Time Complexity -> O(NlogN)
+Space Complexity -> O(1)
+
+Code:
+tatic bool compare(Item a, Item b){
+        double r1 = (double)a.value / (double)a.weight;
+        double r2 = (double)b.value / (double)b.weight;
+        
+        return r1>r2;
+    }
+    //Function to get the maximum total value in the knapsack.
+    double fractionalKnapsack(int W, Item arr[], int n)
+    {
+        // Your code here
+        
+        sort(arr,arr+n,compare);
+        
+        int currWeight = 0;
+        double ans = 0;
+        
+        for(int i=0;i<n;i++){
+            if(currWeight + arr[i].weight <= W){
+                currWeight+=arr[i].weight;
+                ans+=arr[i].value;
+                
+            }else{
+                int remaining = W - currWeight;
+                ans+= ((double)arr[i].value/(double)arr[i].weight) * remaining;
+                break;
+            }
+        }
+        return ans;
+    }
