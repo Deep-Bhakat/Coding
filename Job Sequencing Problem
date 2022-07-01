@@ -1,6 +1,6 @@
 Job Sequencing Problem
 
-Given a set of N jobs where each jobi has a deadline and profit associated with it.
+Given a set of N jobs where each job has a deadline and profit associated with it.
 Each job takes 1 unit of time to complete and only one job can be scheduled at a time. 
 We earn the profit associated with job if and only if the job is completed by its deadline.
 Find the number of jobs done and the maximum profit.
@@ -23,6 +23,8 @@ We need to use a greedy approach to maximise profit
 So we sort the array 
 Then for each job we try to assign it at the last day of its deadline,if it is not available then any other day previous of it.
 
+Time Complexity -> O(NlogN) + O(N*M) where M is the max no of deadline
+Space Complexity -> O(M)
 Code:
  static bool compare(Job a,Job b){
         return a.profit>b.profit;
