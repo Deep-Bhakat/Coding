@@ -20,6 +20,62 @@ given start and end timings.
 The meetings are - (1, 2),(3, 4), (5,7) and (8,9)
 
 Approach:
+We can see that if we sort the ending time then we can take max meeting by comparing ending of one meeting to the starting of next meeting
+We need to pick meetings which end early rather than meetings which end late.
 
+Time Complexity -> O(NlogN)
+Space Complexity -> O(N)
 
+Code:
+static bool compare(pair<int,int> a,pair<int,int> b){
+        return a.second < b.second;
+    }
+    int maxMeetings(int start[], int end[], int n)
+    {
+        vector<pair<int,int> > v;
+        
+        for(int i=0;i<n;i++){
+            v.push_back({start[i],end[i]});
+        }
+        
+        //sorting
+        sort(v.begin(),v.end(),compare);
+        
+        int ans = 1;
+        int timeLimit = v[0].second;
+        
+        for(int i=1;i<n;i++){
+            if(v[i].first>timeLimit){
+                ans++;
+                timeLimit = v[i].second;
+            }
+        }
+        return ans;
+    }
+    
+ Without using compare function:
+ We can take end as first element in pair so no need of compare function
+ 
+ int maxMeetings(int start[], int end[], int n)
+    {
+        vector<pair<int,int> > v;
+        
+        for(int i=0;i<n;i++){
+            v.push_back({end[i],start[i]});
+        }
+        
+        //sorting
+        sort(v.begin(),v.end());
+        
+        int ans = 1;
+        int timeLimit = v[0].first;
+        
+        for(int i=1;i<n;i++){
+            if(v[i].second>timeLimit){
+                ans++;
+                timeLimit = v[i].first;
+            }
+        }
+        return ans;
+    }
 
