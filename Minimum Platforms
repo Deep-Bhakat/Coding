@@ -1,0 +1,81 @@
+Minimum Platforms 
+
+Given arrival and departure times of all trains that reach a railway station. 
+Find the minimum number of platforms required for the railway station so that no train is kept waiting.
+Consider that all the trains arrive on the same day and leave on the same day.
+Arrival and departure time can never be the same for a train but we can have arrival time of one train equal to departure time of the other. 
+At any given instance of time, same platform can not be used for both departure of a train and arrival of another train.
+In such cases, we need different platforms.
+
+
+Example 1:
+
+Input: n = 6 
+arr[] = {0900, 0940, 0950, 1100, 1500, 1800}
+dep[] = {0910, 1200, 1120, 1130, 1900, 2000}
+Output: 3
+Explanation: 
+Minimum 3 platforms are required to 
+safely arrive and depart all trains.
+
+Brute Force:
+Use two loops and find out overlapping for each train and maintain a max count value
+
+Time Complexity -> O(N^2)
+Space Complexity -> O(1)
+
+Code:
+ int countPlatforms(int n,int arr[],int dep[])
+ {
+    int ans=1; //final value
+    for(int i=0;i<n;i++)
+    {
+        int count=1; // count of overlapping interval of only this   iteration
+        for(int j=i+1;j<n;j++)
+        {
+            if((arr[i]>=arr[j] && arr[i]<=dep[j]) ||
+           (arr[j]>=arr[i] && arr[j]<=dep[i]))
+           {
+               count++;
+           }
+        }
+        ans=max(ans,count); //updating the value
+    }
+    return ans;
+ }
+ 
+ 
+Optimal Approach:
+We need to sort the arrays to check for arrival and departure times.
+We start with 2 pointers i pointing to the second train and j pointing to the first train
+If a platform is occupied then we increase the no of platforms
+Else we decrease the no of platforms
+And at each step we check for maxPlatforms
+
+Time Complexity -> O(NlogN)
+Space Compleixty -> O(1)
+
+Code:
+int findPlatform(int arr[], int dep[], int n)
+    {
+    	// sort the arrays
+    	sort(arr,arr+n);
+    	sort(dep,dep+n);
+        
+        int minPlatforms = 1;
+        int platforms = 1;
+        int i=1,j=0;
+        while(i<n && j<n){
+        //check if platform is free or not by checking the arrival time of next train and departure time of previous train if no increase the no of platforms
+            if(arr[i]<=dep[j]){
+                i++;
+                platforms++;
+                //check if platform is free if yes reduce no of platforms
+            }else if(arr[i]>dep[j]){
+                j++;
+                platforms--;
+            }
+            minPlatforms=max(minPlatforms,platforms);
+        }
+        return minPlatforms;
+    }
