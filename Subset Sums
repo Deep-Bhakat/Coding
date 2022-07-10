@@ -1,0 +1,42 @@
+Subset Sums 
+
+Given a list arr of N integers, print sums of all subsets in it.
+
+Example 1:
+
+Input:
+N = 2
+arr[] = {2, 3}
+Output:
+0 2 3 5
+Explanation:
+When no elements is taken then Sum = 0.
+When only 2 is taken then Sum = 2.
+When only 3 is taken then Sum = 3.
+When element 2 and 3 are taken then 
+Sum = 2+3 = 5.
+
+Recursion Brute Force:
+For each step either we take the element or we do not
+So we can use recursion to solve it
+
+Time Complexity -> O(2^N)
+Space Complexity -> O(2^N)
+
+Code:
+void helper(vector<int> arr, int N, vector<int>& ans,int sum,int index){
+    if(index==N){
+        ans.push_back(sum);
+        return;
+    }
+    
+    helper(arr,N,ans,sum,index+1);
+    helper(arr,N,ans,sum+arr[index],index+1);
+}
+    vector<int> subsetSums(vector<int> arr, int N)
+    {
+        // Write Your Code here
+        vector<int> ans;
+        helper(arr,N,ans,0,0);
+        return ans;
+    }
