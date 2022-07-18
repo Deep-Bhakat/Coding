@@ -1,0 +1,111 @@
+Implement Queue using Stacks
+
+Implement a first in first out (FIFO) queue using only two stacks. 
+The implemented queue should support all the functions of a normal queue (push, peek, pop, and empty).
+
+Implement the MyQueue class:
+
+void push(int x) Pushes element x to the back of the queue.
+int pop() Removes the element from the front of the queue and returns it.
+int peek() Returns the element at the front of the queue.
+boolean empty() Returns true if the queue is empty, false otherwise.
+
+Push - O(n) and Pop(1) Approach:
+Here we modify the push operation to perform FIFO operation
+
+As stack if LIFO so we copy the elements of first stack to the second, then add the new element to the first staack and then copy the elements back 
+to the first stack in reverse order to counter LIFO.
+
+Code:
+class MyQueue {
+    stack<int> s1;
+    stack<int> s2;
+public:
+    MyQueue() {
+        
+    }
+    
+    void push(int x) {  
+
+            while(!s1.empty()){
+                s2.push(s1.top());
+                s1.pop();
+            }
+            s1.push(x);
+            while(!s2.empty()){
+                s1.push(s2.top());
+                s2.pop();
+            }
+        
+    }
+    
+    int pop() {
+        if(!s1.empty()){
+            int ans = s1.top();
+            s1.pop();
+            return ans;
+        }
+        return -1;
+    }
+    
+    int peek() {
+        return s1.top();
+    }
+    
+    bool empty() {
+        return s1.empty();
+    }
+};
+
+
+Push O(1) and Pop O(n) Approach:
+Now we use an extra int to store the front element and enhance the pop operation
+
+We can use the extra stack to store the elements and remove the top element and then copy back the elemnts to the first stack while changing the front
+
+Code:
+class MyQueue {
+    stack<int> s1;
+    stack<int> s2;
+    int front;
+public:
+    MyQueue() {
+        
+    }
+    
+    void push(int x) {  
+        if(s1.empty())
+            front=x;
+         
+        s1.push(x);            
+    }
+    
+    int pop() {
+        if(!s1.empty()){
+            while(!s1.empty()){
+                s2.push(s1.top());
+                s1.pop();
+            }
+            
+            int ans = s2.top();
+            s2.pop();
+            if(!s2.empty())
+                front = s2.top();
+            
+             while(!s2.empty()){
+                s1.push(s2.top());
+                s2.pop();
+            }
+            return ans;
+        }
+        return -1;
+    }
+    
+    int peek() {
+        return front;
+    }
+    
+    bool empty() {
+        return s1.empty();
+    }
+};
