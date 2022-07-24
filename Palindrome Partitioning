@@ -1,0 +1,47 @@
+Palindrome Partitioning
+Given a string s, partition s such that every substring of the partition is a palindrome. Return all possible palindrome partitioning of s.
+
+A palindrome string is a string that reads the same backward as forward.
+
+ Example 1:
+
+Input: s = "aab"
+Output: [["a","a","b"],["aa","b"]]
+Example 2:
+
+Input: s = "a"
+Output: [["a"]]
+
+
+Brute Force:
+Create a function to check if it is palindrome
+For each index check if it can be partitioned palindromically
+
+Time Complexity -> O(2^N)
+Space Complexity -> O(k*x)
+bool isPalindrome(string s, int start, int end) {
+        while (start <= end) {
+          if (s[start++] != s[end--])
+            return false;
+        }
+        return true;
+    }
+    void func(int ind,vector<vector<string>> &ans,vector<string> &temp,string s){
+        if(ind==s.length()){
+            ans.push_back(temp);
+            return;
+        }
+        for(int i=ind;i<s.length();i++){
+            if(isPalindrome(s,ind,i)){
+                temp.push_back(s.substr(ind,i-ind+1));
+                func(i+1,ans,temp,s);
+                temp.pop_back();
+            }
+        }
+    }
+    vector<vector<string>> partition(string s) {
+        vector<vector<string>> ans;
+        vector<string> temp;
+        func(0,ans,temp,s);
+        return ans;
+    }
