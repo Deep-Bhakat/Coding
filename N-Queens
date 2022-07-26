@@ -1,0 +1,153 @@
+N-Queens
+The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
+
+Given an integer n, return all distinct solutions to the n-queens puzzle. You may return the answer in any order.
+
+Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space, respectively.
+Example:
+Input: n = 4
+Output: [[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
+Explanation: There exist two distinct solutions to the 4-queens puzzle as shown above
+Example 2:
+
+Input: n = 1
+Output: [["Q"]]
+
+Recursion:
+We  can use recursion and try to place a Queen in each position of a column and check if it is safe to fill or not.
+Backtracking step : After filling when we come back we need to remove the Queen.
+
+Time Complexity -> O(N! * N)
+Space Complexity -> O(N^2)
+
+Code:
+class Solution {
+public:
+    bool isSafe(vector<string> board,int row,int col,int n){
+        //we need to check only the upper left diagonal,left and lower left diagonal
+        //taking duplicates of row and col as we will change them
+        int dupRow = row;
+        int dupCol = col;
+        
+        //upper left diagonal
+        while(row>=0 && col>=0){
+            if(board[row][col]=='Q') return false;
+            row--;
+            col--;
+        }
+        row = dupRow;
+        col = dupCol;
+        //left
+        while(col>=0){
+            if(board[row][col]=='Q') return false;
+            col--;
+        }
+        row = dupRow;
+        col = dupCol;
+        //lower left diagonal
+        while(row<=n-1 && col>=0){
+            if(board[row][col]=='Q') return false;
+            row++;
+            col--;
+        }
+        
+        return true;
+    }
+    void solve(int col,vector<vector<string>> &ans, vector<string> &board,int n){
+        //base case when column reaches n
+        if(col==n){
+            ans.push_back(board);
+            return;
+        }
+        
+        for(int row=0;row<n;row++){
+            if(isSafe(board,row,col,n)){
+                //placing a queen 
+                board[row][col]='Q';
+                //calling recursion for other columns
+                solve(col+1,ans,board,n);
+                //backtracking step
+                board[row][col]='.';
+            }
+        }
+    }
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string>> ans;
+        vector<string> board(n);
+        string s(n,'.');
+        for(int i=0;i<n;i++)
+            board[i]=s;
+        
+        solve(0,ans,board,n);
+        
+        return ans;
+    }
+};
+
+Optimal Approach:
+We can reduce the extra time taken to check isSafe by using hashing.
+To check the leftRow we can maintain a leftRow array and update it whenever we place a Queen in a row. 
+To check left lower diagonal, we can maintain a lowerDiagonal array of size 2*n -1, 
+For example a 4*4 matrix
+0 1 2 3
+1 2 3 4
+2 3 4 5
+3 4 5 6
+
+As we can see the left lower diagonal has the same value so we can use hashing to determine whether it is already filled or not.
+
+Same for upper left diagonal, but here the formula is (n-1)+(col-row)
+3 4 5 6
+2 3 4 5
+1 2 3 4
+0 1 2 3
+
+As we can see the left upper diagonal has the same value so we can use hashing to determine whether it is already filled or not.
+
+Time Complexity -> O(N! * N)
+Space Complexity -> O(N)
+
+Code:
+class Solution {
+public:
+    void solve(int col,vector<vector<string>> &ans, vector<string> &board,int n,vector<int> &leftRow,vector<int> &lowerDiagonal,vector<int> &upperDiagonal){
+        //base case when column reaches n
+        if(col==n){
+            ans.push_back(board);
+            return;
+        }
+        
+        for(int row=0;row<n;row++){
+            //checking if is it safe to place a queen
+            if(leftRow[row]==0 && lowerDiagonal[row+col]==0 && upperDiagonal[n - 1 + col - row]==0){
+                //placing a queen 
+                board[row][col]='Q';
+                //hashing the arrays
+                leftRow[row]=1;
+                lowerDiagonal[row + col]=1;
+                upperDiagonal[n - 1 + col - row]=1;
+                //calling recursion for other columns
+                solve(col+1,ans,board,n,leftRow,lowerDiagonal,upperDiagonal);
+                //backtracking step
+                board[row][col]='.';
+                //rehashing the arrays                
+                leftRow[row]=0;
+                lowerDiagonal[row + col]=0;
+                upperDiagonal[n - 1 + col - row]=0;
+            }
+        }
+    }
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string>> ans;
+        vector<string> board(n);
+        vector<int> leftRow(n,0),lowerDiagonal(2*n-1,0),upperDiagonal(2*n-1,0);
+        string s(n,'.');
+        for(int i=0;i<n;i++)
+            board[i]=s;
+        
+        solve(0,ans,board,n,leftRow,lowerDiagonal,upperDiagonal);
+        
+        return ans;
+    }
+};
+
