@@ -1,0 +1,75 @@
+Rat in a Maze Problem - I
+Consider a rat placed at (0, 0) in a square matrix of order N * N. It has to reach the destination at (N - 1, N - 1). 
+Find all possible paths that the rat can take to reach from source to destination. 
+The directions in which the rat can move are 'U'(up), 'D'(down), 'L' (left), 'R' (right). 
+Value 0 at a cell in the matrix represents that it is blocked and rat cannot move to it while value 1 at a cell 
+in the matrix represents that rat can be travel through it.
+Note: In a path, no cell can be visited more than one time. If the source cell is 0, the rat cannot move to any other cell.
+Example 1:
+
+Input:
+N = 4
+m[][] = {{1, 0, 0, 0},
+         {1, 1, 0, 1}, 
+         {1, 1, 0, 0},
+         {0, 1, 1, 1}}
+Output:
+DDRDRR DRDDRR
+Explanation:
+The rat can reach the destination at 
+(3, 3) from (0, 0) by two paths - DRDDRR 
+and DDRDRR, when printed in sorted order 
+we get DDRDRR DRDDRR.
+
+Recursion:
+Use recursion to travel through every possible position
+base case: if we reach the end
+We also maintain an visited array to keep track of the visited positions as we can only visit them once
+
+Time Complexity -> O(4^(m*n))
+Space Complexity -> O(m*n)
+
+Code:
+class Solution{
+    public:
+    void solve(vector<vector<int>> &m,vector<string> &ans,int n,vector<vector<int>> &visited,int i,
+    int j,string move){
+        if(i == n-1 && j== n-1){
+            ans.push_back(move);
+            return;
+        }    
+        //down
+        if(i+1<n && !visited[i+1][j] && m[i+1][j]==1){
+            visited[i][j]=1;
+            solve(m,ans,n,visited,i+1,j,move + 'D');
+            visited[i][j]=0;
+        }
+        
+        //left
+        if(j-1>=0 && !visited[i][j-1] && m[i][j-1]==1){
+            visited[i][j]=1;
+            solve(m,ans,n,visited,i,j-1,move + 'L');
+            visited[i][j]=0;
+        }
+        //right
+        if(j+1<n && !visited[i][j+1] && m[i][j+1]==1){
+            visited[i][j]=1;
+            solve(m,ans,n,visited,i,j+1,move + 'R');
+            visited[i][j]=0;
+        }
+        //up
+        if(i-1>=0 && !visited[i-1][j] && m[i-1][j]==1){
+            visited[i][j]=1;
+            solve(m,ans,n,visited,i-1,j,move + 'U');
+            visited[i][j]=0;
+        }
+        
+    }
+    vector<string> findPath(vector<vector<int>> &m, int n) {
+        // Your code goes here
+        vector<string> ans;
+        vector<vector<int>> visited(n,vector<int>(n,0));
+        if(m[0][0]==1) solve(m,ans,n,visited,0,0,"");
+        return ans;
+    }
+};
