@@ -1,0 +1,53 @@
+Single Element in a Sorted Array
+
+You are given a sorted array consisting of only integers where every element appears exactly twice, except for one element which appears exactly once.
+
+Return the single element that appears only once.
+
+Your solution must run in O(log n) time and O(1) space.
+
+Example 1:
+
+Input: nums = [1,1,2,3,3,4,4,8,8]
+Output: 2
+Example 2:
+
+Input: nums = [3,3,7,7,10,11,11]
+Output: 10
+
+O(N) Xorr Solution:
+ We can xorr all the elements and it will give us the ans as xorr of same elements is 0.
+ 
+ Time Complexity -> O(N)
+ Space Complexity -> O(1)
+ 
+ Code:
+  int singleNonDuplicate(vector<int>& nums) {
+       int ans = nums[0];
+        for(int i=1;i<nums.size();i++)
+            ans^=nums[i];
+        
+        return ans;
+    }
+    
+ Optimal Approach (Binary Search):
+ We can observe that in the left half the first occurance is in the even index while in the right half the first occurancce is in the odd index.
+ We can use binary search to find the point where the left half ends and right half starts.
+ 
+ Time Complexity -> O(log n)
+ Space Complexity -> O(1)
+ 
+ int singleNonDuplicate(vector<int>& nums) {
+       int l=0,r=nums.size()-2;
+        
+        while(l<=r){
+            int mid = (r-l) / 2 + l;
+            
+            if(nums[mid]==nums[mid^1]) //xorr of a odd no with 1 gives the first lesser even no and xorr with even gives the first greater odd no
+                l = mid + 1;
+            else
+                r = mid - 1;
+        }
+        
+        return nums[l];
+    }
